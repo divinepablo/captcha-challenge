@@ -5,7 +5,7 @@ const cors = require('cors');
 const path = require("path");
 const uuid4 = require("uuid4");
 const challenges = [];
-
+const HOST = "verify.skeltronix.xyz";
 // Middleware function to log request details
 const logRequest = (req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} ${res.statusCode}`);
@@ -37,7 +37,7 @@ app.get("/generate-challenge", (req, res) => {
   res.json({
     success: true,
     token: token,
-    challengeURL: `https://verify.skeltronix.xyz?token=${token}`,
+    challengeURL: `https://${HOST}?token=${token}`,
   });
 });
 
@@ -86,7 +86,7 @@ app.post("/verify", async (req, res) => {
     const { success } = _response.data;
     if (success) {
       challenge.verified = true;
-      res.status(200).json({ success: success, message: `https://verify.skeltronix.xyz/redirect?token=${challenge.token}` });
+      res.status(200).json({ success: success, message: `https://${HOST}/redirect?token=${challenge.token}` });
     } else {
       res
         .status(/*400*/ 200)
